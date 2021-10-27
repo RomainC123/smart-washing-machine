@@ -1,0 +1,16 @@
+fonctionalités du bot:
+- /status: renvoie l'état de toutes les machines (pas besoin d'authentification pour ça)
+- /subscribe: commande permettant à un utilisateur de rentrer dans la database (nom, prénom, @telegram, email)
+	Genere ensuite une URL pour l'utilisateur à foutre dans une appli de broadcast de tag NFC pour ensuite s'authetifier sur les machines
+- /unsubscribe: enlever son entrée de la database (protégée, uniquement accessible pour le @telegram qui a crée le truc à la base, pas opti mais à voir)
+
+Envoi d'un message automatisé à l'utilisateur qui a bippé uen machine:
+	Un message pour confirmer le début du cycle
+	Un message pour prévenir de la fin qui s'approche (cycle d'essorage)
+	Un message pour prévenir de la fin du cyle (plus de vibrations)
+	Un message pour notifier de l'ouverture de la porte après la fin du cycle
+	
+	
+Trucs à gérer:
+	Réaction de la carte à la lecture d'un tag nfc
+	Connection au réseau pour envoyer les infos au serveur
