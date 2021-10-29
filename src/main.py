@@ -30,8 +30,11 @@ with open('data/admins', 'r') as f:
 
 # ------------------------------------------------------------------------------
 
-start_handler = CommandHandler('start', start, filters=Filters.user(username=admins))
+start_handler = CommandHandler('start', start)
 dispatcher.add_handler(start_handler)
+
+init_handler = CommandHandler('init', init, filters=Filters.user(username=admins))
+dispatcher.add_handler(init_handler)
 
 reset_handler = CommandHandler('reset', reset, filters=Filters.user(username=admins))
 dispatcher.add_handler(reset_handler)
@@ -42,7 +45,14 @@ dispatcher.add_handler(subscribe_handler)
 unsubscribe_handler = CommandHandler('unsubscribe', unsubscribe)
 dispatcher.add_handler(unsubscribe_handler)
 
+start_cycle_handler = CommandHandler('start_cycle', start_cycle)
+dispatcher.add_handler(start_cycle_handler)
+
 status_handler = CommandHandler('status', status)
 dispatcher.add_handler(status_handler)
 
 updater.start_polling()
+
+while True:
+    status_updater()
+    time.sleep(10)
