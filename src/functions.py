@@ -64,7 +64,7 @@ def start(update, context):
     Welcome message on /start
     """
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text="Welcome to the Smart Washing Mashine Bot!\nAvaliable commands:\n- /status: Displays the status of all connected machines\n- /start_cycle Use it after strating a machine cycle. Write the command followed by the duration of the program you started (for example, for a 50 minutes program, write /start_cycle 50)")
+                             text="Welcome to the Smart Washing Mashine Bot!\nAvaliable commands:\n- /status: Displays the status of all connected machines\n- /start_cycle Use it after strating a machine cycle. Write the command followed by the duration of the program you started (for example, for a 50 minutes program, write /start_cycle 50).")
 
 
 def init(update, context):
@@ -182,7 +182,7 @@ def start_cycle(update, context):
                     pickle.dump(list_status, f)
 
                 context.bot.send_message(chat_id=update.message.chat_id,
-                                         text=f"Your cycle has been registered.\nYou will be notified when it nears completion.")
+                                         text=f"Your cycle has been registered.\nNow don't forget to press the button on the card to update the bot /status command.")
         else:
             context.bot.send_message(chat_id=update.message.chat_id,
                                      text=f"Please provide a valid duration (in minutes) with your command (/start_sycle 90 for example).")
@@ -210,14 +210,21 @@ def status(update, context):
     message = f"Machine 1:\nStatus: {status}\n"
 
     if list_status[0] == 1:
-        message += f"User: @{list_status[1]}\n"
+        if list_status[1] != None:
+            message += f"User: @{list_status[1]}\n"
+        else:
+            message += f"User: Not specified\n"
 
     elif list_status[0] == 0:
-        duration_left = ((list_status[2] - datetime.datetime.now()).seconds // 60) % 60
-        if duration_left > 0:
-            message += f"User: @{list_status[1]}\nTime left: {duration_left} min\n"
-        else:
-            message += f"User: @{list_status[1]}\nTime left: Cycle nears completion\n"
+        try:
+            duration_left = ((list_status[2] - datetime.datetime.now()).seconds // 60) % 60
+            if duration_left > 0:
+                message += f"User: @{list_status[1]}\nTime left: {duration_left} min\n"
+            else:
+                list_status[2] = None
+                message += f"User: @{list_status[1]}\nTime left: Cycle nears completion\n"
+        except:
+            message += f"User: Not specified\nDuration: Not specified"
 
     with open('data/status.pkl', 'wb') as f:
         pickle.dump(list_status, f)
